@@ -1,0 +1,43 @@
+---
+- name: Создание директорий для конфигурации 3X-UI и Pi-Hole
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - /etc/x-ui
+    - /etc/pihole
+
+- name: Копирование базы данных 3X-UI с клиентами
+  copy:
+    src: x-ui.db
+    dest: /etc/x-ui/x-ui.db
+    mode: '0644'
+
+- name: Копирование конфигурации Pi-Hole v6 (toml)
+  copy:
+    src: pihole.toml
+    dest: /etc/pihole/pihole.toml
+    mode: '0644'
+
+- name: Копирование базы данных блокировок Pi-Hole (gravity)
+  copy:
+    src: gravity.db
+    dest: /etc/pihole/gravity.db
+    mode: '0644'
+
+- name: Скачивание и тихий запуск инсталлятора 3X-UI
+  shell: |
+    curl -Ls https://githubusercontent.com -o /tmp/3x-ui.sh
+    chmod +x /tmp/3x-ui.sh
+    /tmp/3x-ui.sh y
+  args:
+    creates: /usr/local/x-ui/binary/x-ui
+
+- name: Скачивание и тихий запуск инсталлятора Pi-Hole
+  shell: |
+    curl -sSL https://pi-hole.net -o /tmp/pihole-install.sh
+    chmod +x /tmp/pihole-install.sh
+    /tmp/hole-install.sh --unattended
+  args:
+    creates: /usr/local/bin/pihole

@@ -1,0 +1,8 @@
+---
+- name: Настройка VPS сервера (VPN + CS:Source)
+  hosts: my_vps
+  become: yes
+
+  roles:
+    - common
+    - vpn_dns

@@ -1,0 +1,11 @@
+# Игнорируем файл с реальными IP-адресами
+hosts
+
+# Игнорируем секретные базы данных с ключами клиентов
+roles/vpn_dns/files/x-ui.db
+roles/vpn_dns/files/pihole.toml
+roles/vpn_dns/files/gravity.db
+
+# Игнорируем временные файлы и кэш
+.ansible/
+*.retry

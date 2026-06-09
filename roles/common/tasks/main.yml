@@ -1,0 +1,48 @@
+---
+- name: Обновление кэша пакетов (apt update)
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Установка базовых системных утилит
+  apt:
+    name:
+      - curl
+      - git
+      - ufw
+      - htop
+      - software-properties-common
+    state: present
+
+- name: Настройка правил UFW для TCP портов
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop:
+    - '22'
+    - '80'
+    - '443'
+    - '2096'
+    - '27025'
+    - '41211'
+
+- name: Настройка правил UFW для UDP портов
+  ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: udp
+  loop:
+    - '27015'
+    - '27025'
+    - '27040'
+    - '27050'
+
+- name: Настройка правила UFW для комбинированного порта 57991 (TCP/UDP)
+  ufw:
+    rule: allow
+    port: '57991'
+
+- name: Включить файрвол UFW
+  ufw:
+    state: enabled

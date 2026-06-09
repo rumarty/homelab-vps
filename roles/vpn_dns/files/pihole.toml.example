@@ -1,0 +1,12 @@
+# Пример конфигурации Pi-hole v6
+
+[main]
+interface = "eth0"
+
+[dns]
+upstreams = [ "1.1.1.1", "8.8.8.8" ]
+
+[web]
+# Здесь должен быть хеш вашего пароля. Сгенерируйте его при установке.
+pwhash = "$ARGON2_OR_BALLOON_HASH_PLACEHOLDER"
+port = 80
